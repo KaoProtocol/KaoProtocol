@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import './App.css';
 import video from "./img/background.mp4"
+import memberImage from "./img/member.jpg"
+import bgMain from "./img/mainbg.png"
 import Notify from './components/Notify';
 import { contractaddress, contractABI, chainID } from "./utils/constants";
+import {shortenAddress} from "./utils/trauncate";
 import { ethers } from "ethers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
@@ -117,16 +120,17 @@ function App() {
 //connect wallet mobile devices
   const connectWalletmobile = async () => {
 
+   console.log("Mobile connect here");
 
     const providerOptions = {
       walletconnect: {
         package: WalletConnectProvider, // required
         options: {
           rpc: {
-            97: "https://testnet.bscscan.com/",
+              56: 'https://bsc-dataseed.binance.org/'
           }, // required
-          network: 'bsc testnet',
-          chainId: 97,
+          network: 'binance',
+          chainId: 56,
         }
       },
     };
@@ -281,14 +285,11 @@ function App() {
     <div className="App">
 
 
-      <div className="vid-container">
-    
-          <video  src={video} loop autoPlay id="background-video"></video>
-
-      </div>
-
-
       <div className="body-container">
+
+            <div className="img-centered">
+              <img src={bgMain}  alt="imageControl" />
+            </div>
 
 
               <div className="divone">
@@ -306,14 +307,14 @@ function App() {
 
                      <div className="containaddress">
                         <address className='address' >Address</address>
-                        {address}
+                        {shortenAddress(address)}
                      </div>
 
                      <div className="containaddress">
                         <div className="icon">
-                          Icon
+                           {member != 0 ? <img src={memberImage} alt="memberlogo" className='imgmember' /> : "Buy" } 
                         </div>
-                         { member != 0 ? "Member" : "Not a Member" }
+                         { member != 0 ? "Member" : "Kao to be a Member" }
                      </div>
 
                   </div>
@@ -329,9 +330,9 @@ function App() {
               <div className="divtwo">
               
 
-                  <div className="contractbalance">{ tokenbalance ? tokenbalance : "0" }Eth</div>
+                  <div className="contractbalance"><small>CA balance</small> { tokenbalance ? tokenbalance : "0" }Eth</div>
 
-                  <div className="totalminted">{ totalMinted ? totalMinted : "0" }/5000 Minted</div>
+                  <div className="totalminted">User Minted { totalMinted ? totalMinted : "0" }/5000</div>
 
                   <div className="mintbutton" onClick={ mint }>
                     Mint <br />
